@@ -21,28 +21,21 @@ var con = mysql.createConnection({
   database: "mydb"
 });
 
-// con.connect(function(err) {
-//   if (err) throw err;
-//   console.log("\nMySQL is Connected!");
-// });
-
-// con.connect(function(err) {
-//   if (err) throw err;
-//   con.query("SELECT name = Test, address FROM customers", function (err, result, fields) {
-//     if (err) throw err;
-//     console.log(fields);
-//   });
-// });
-
-//test insert data to MySQL
-// con.connect(function(err) {
-//   if (err) throw err;
-//   var sql = "UPDATE customers SET address = '16/1' WHERE address = 'PANUPANx'";
-//   con.query(sql, function (err, result) {
-//     if (err) throw err;
-//     console.log(result.affectedRows + " record(s) updated");
-//   });
-// });
+//On Page For Insert "John" in MySQL
+function main(req, res){
+  con.connect(function(err) {
+    //if (err) throw err;
+    console.log("Connected!");
+    var sql = "INSERT INTO member (fname, lname, sex) VALUES ?";
+    var values = [
+      ['John', 'Highway 71','M']
+    ];
+    con.query(sql, [values], function (err, result, fields) {
+      if (err) throw err;
+      console.log("Number of records inserted: " + result.affectedRows);
+    });
+  });
+}
 
 
 /////////////////////////////////////////////////
@@ -50,6 +43,7 @@ var con = mysql.createConnection({
 app.get('/',function(req,res){
   res.render('Index')
   console.log("Index Page");
+  main();
 });
 
 app.get('/insert',function(req,res){
@@ -84,10 +78,10 @@ app.get('/delete/:_id',function(req,res) {
   res.redirect('/views')
 });
 
-
+//#############################################################################
 //post
 app.post('/insert',function(req,res){
-  var users = new pkap_tests({
+  var users = new member({
     fname : req.body.fname,
     lname : req.body.lname,
     sex : req.body.sex
