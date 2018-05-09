@@ -25,12 +25,12 @@
             <center>
 
             <form method="post" action="/update">
-              <p><input type="text" class="form-control" name="fname" value="<%=data.fname%>"></p>
-              <p><input type="text" class="form-control" name="lname" value="<%=data.lname%>"></p>
-              <p><input type="text" class="form-control" name="sex" value="<%=data.sex%>"></p>
+              <p><input type="text" class="form-control" name="fname" value="<%=data[0].fname%>"></p>
+              <p><input type="text" class="form-control" name="lname" value="<%=data[0].lname%>"></p>
+              <p><input type="text" class="form-control" name="sex" value="<%=data[0].sex%>"></p>
 
-              <% var _id = data._id%>
-              <input type="hidden" name="_id" value="<%=_id%>">
+              <% var _id = data[0]._id%>
+              <input type="hidden" name="_id" value="<%=data[0]._id%>">
               <button type="submit" class="btn btn-primary">Submit</button>
             </form>
         </center>

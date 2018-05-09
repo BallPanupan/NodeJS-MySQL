@@ -53,12 +53,6 @@ app.get('/insert',function(req,res){
 
 //in view has delete
 app.get('/views',function(req,res){
-  //   pkap_tests.find('pkap_tests'.toArray,function(ree,result){
-  //     console.log(result);
-  //   res.render('view',{data:result});
-  // });
-  // console.log("view Page");
-
   con.connect(function(err) {
     //if (err) throw err;
     //Select all customers and return the result object:
@@ -73,13 +67,25 @@ app.get('/views',function(req,res){
 });
 
 app.get('/update/:_id',function(req,res){
-  //var _id=req.params._id;
-  pkap_tests.findById(req.params._id,function(err, result){
-
-    res.render('update',{data:result})
-    console.log("\nview data for update");
-    console.log(result);
+  con.connect(function(err) {
+    //if (err) throw err;
+    //Select all customers and return the result object:
+    con.query("SELECT * FROM member WHERE _id =" + req.params._id, function (err, result, fields) {
+      if (err) throw err;
+      console.log(result);
+      res.render('update',{data:result});
     });
+    console.log("Update Page");
+  });
+
+  //var _id=req.params._id;
+  // pkap_tests.findById(req.params._id,function(err, result){
+  //
+  //   res.render('update',{data:result})
+  //   console.log("\nview data for update");
+  //   console.log(result);
+  //   });
+
 });
 
 app.get('/delete/:_id',function(req,res) {
@@ -128,12 +134,11 @@ app.post('/insert',function(req,res){
 });
 
 app.post('/update',function(req, res){
-  pkap_tests.findById(req.body._id,function(err, result){
-    result.fname = req.body.fname;
-    result.lname = req.body.lname;
-    result.sex = req.body.sex;
-    result.save();
+  con.connect(function(err) {
+  con.query('UPDATE member SET ? WHERE _id ='+ "'"+req.body._id+"' ",
+           {_id : req.body._id, fname: req.body.fname, lname: req.body.lname, sex: req.body.sex})
   });
+
   res.redirect('../views');
 });
 
