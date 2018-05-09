@@ -43,7 +43,7 @@ function main(req, res){
 app.get('/',function(req,res){
   res.render('Index')
   console.log("Index Page");
-  main();
+  //main();  Test insert
 });
 
 app.get('/insert',function(req,res){
@@ -81,13 +81,27 @@ app.get('/delete/:_id',function(req,res) {
 //#############################################################################
 //post
 app.post('/insert',function(req,res){
-  var users = new member({
-    fname : req.body.fname,
-    lname : req.body.lname,
-    sex : req.body.sex
-  })
-  users.save();
-  res.redirect('/views')
+  var users = [
+    fname = req.body.fname,
+    lname = req.body.lname,
+    sex = req.body.sex
+  ]
+  console.log(users);
+
+  con.connect(function(err) {
+    //if (err) throw err;
+    console.log("Connected!");
+    var sql = "INSERT INTO member (fname, lname, sex) VALUES ?";
+    var values = [
+      [req.body.fname, req.body.lname, req.body.sex]
+    ];
+    con.query(sql, [values], function (err, result, fields) {
+      if (err) throw err;
+      console.log("Number of records inserted: " + result.affectedRows);
+    });
+  });
+  // users.save();
+  res.redirect('./')
 });
 
 app.post('/update',function(req, res){
