@@ -53,11 +53,22 @@ app.get('/insert',function(req,res){
 
 //in view has delete
 app.get('/views',function(req,res){
-    pkap_tests.find('pkap_tests'.toArray,function(ree,result){
+  //   pkap_tests.find('pkap_tests'.toArray,function(ree,result){
+  //     console.log(result);
+  //   res.render('view',{data:result});
+  // });
+  // console.log("view Page");
+
+  con.connect(function(err) {
+    //if (err) throw err;
+    //Select all customers and return the result object:
+    con.query("SELECT * FROM member", function (err, result, fields) {
+      if (err) throw err;
       console.log(result);
-    res.render('view',{data:result});
+      res.render('view',{data:result});
+    });
+    console.log("view Page");
   });
-  console.log("view Page");
 
 });
 
@@ -72,9 +83,21 @@ app.get('/update/:_id',function(req,res){
 });
 
 app.get('/delete/:_id',function(req,res) {
-  pkap_tests.findById(req.params._id,function(err,pkap_tests){
-    pkap_tests.remove();
+  // pkap_tests.findById(req.params._id,function(err,pkap_tests){
+  //   pkap_tests.remove();
+  // });
+
+  console.log(req.params._id);
+  con.connect(function(err) {
+    //if (err) throw err;
+    var sql = "DELETE FROM member WHERE _id = "+ req.params._id;
+    con.query(sql, function (err, result) {
+      if (err) throw err;
+      console.log("Number of records deleted: " + result.affectedRows);
+    });
   });
+
+
   res.redirect('/views')
 });
 
@@ -101,7 +124,7 @@ app.post('/insert',function(req,res){
     });
   });
   // users.save();
-  res.redirect('./')
+  res.redirect('/views')
 });
 
 app.post('/update',function(req, res){
